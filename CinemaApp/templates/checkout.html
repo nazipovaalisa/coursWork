@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <div class="container">
+    <h3 class="text-center mt-5 mb-5">Форма заказа</h3>
+    <div class="row">
+    <div class="col-md-6">
+    <h3>Данные для получения заказа</h3>
+    <form action="{% url 'make_order' %}" method="POST">
+    {% csrf_token %}
+    <div class="form-row">
+        <div class="form-group col-md-6 mb-0">
+            {{ form.phone|as_crispy_field  }}
+        </div>
+        <div class="form-group col-md-6 mb-0">
+            {{ form.email|as_crispy_field  }}
+        </div>
+        {% if user.is_authenticated %}
+            <div class="mb-3 form-check" aria-describedby="checkbon">
+            {{ form.use_bonuses| as_crispy_field }}
+                <span id="checkbon" class="form-text">
+                    Вы можете списать {{ cart.owner.bonuses }} б.
+                </span>
+            </div>
+        {% endif %}
+        <input type="submit" class="btn btn-primary btn-block mb-3" value="Оплатить">
+    </div>
+    </form>
+    </div>
+    <div class="col-md-6">
+        <div class="row">
+
+         <div class="creditCardForm">
+         <div class="heading">
+         <h3>Оплата картой</h3>
+         </div>
+         <div class="payment">
+         <form>
+             <div class="form-group" id="card-number-field">
+         <label for="cardNumber">Card Number</label>
+         <input type="text" class="form-control" id="cardNumber">
+         </div>
+         <div class="form-group owner">
+         <label for="owner">Owner</label>
+         <input type="text" class="form-control" id="owner">
+         </div>
+         <div class="form-group CVV">
+         <label for="cvv">CVV</label>
+         <input type="text" class="form-control" id="cvv" maxlength="3" minlength="3" style="width: 70px">
+         </div>
+         <div class="form-group" id="expiration-date">
+             <br>
+         <label>Expiration Date</label>
+         <select>
+         <option value="01">January</option>
+         <option value="02">February </option>
+         <option value="03">March</option>
+         <option value="04">April</option>
+         <option value="05">May</option>
+         <option value="06">June</option>
+         <option value="07">July</option>
+         <option value="08">August</option>
+         <option value="09">September</option>
+         <option value="10">October</option>
+         <option value="11">November</option>
+         <option value="12">December</option>
+         </select>
+         <select>
+         <option value="22"> 2022</option>
+         <option value="23"> 2023</option>
+         <option value="24"> 2024</option>
+         <option value="25"> 2025</option>
+         <option value="26"> 2026</option>
+         <option value="27"> 2027</option>
+         </select>
+         </div>
+         <div class="form-group" id="credit_cards">
+             <br>
+         <img src="https://bootstraptema.ru/snippets/form/2017/visa.jpg" id="visa">
+         <img src="https://bootstraptema.ru/snippets/form/2017/mastercard.jpg" id="mastercard">
+         <img src="https://bootstraptema.ru/snippets/form/2017/amex.jpg" id="amex">
+         </div>
+         </form>
+         </div>
+         </div>
+        </div>
+    </div>
+    </div>
+    </div>
+{% endblock content %}

@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <div class="container">
+    <h3 class="text-center mt-5 mb-3">Оформление заказа</h3>
+    <div class="row">
+    <div class="col-md-5 p-5">
+        {% with cart.tickets.all.0 as bron %}
+        <table class="table text-center " border="1">
+        <thead>
+        <tr>
+            <td colspan="3">
+                <h5>{{ bron.ticket.seans.film }} | {{ bron.ticket.seans.date_seans }}  {{ bron.ticket.seans.time_seans }}</h5>
+                <h5>Зал №{{ bron.ticket.seans.hall.hall_id }} | {{ bron.ticket.seans.hall.get_type_display }} </h5>
+            </td>
+        </tr>
+        </thead>
+            <tbody>
+        {% for bron_ticket in cart.tickets.all %}
+        <tr>
+            <td>
+                <h5>Ряд:</h5> {{ bron_ticket.ticket.row }}
+            </td>
+            <td>
+                <h5>Место:</h5> {{ bron_ticket.ticket.seat }}
+            </td>
+            <td>
+                <h5>Цена:</h5> {{ bron_ticket.ticket.price }} р
+            </td>
+        </tr>
+        {% endfor %}
+        {% endwith %}
+        </tbody>
+        <tfoot>
+        <tr>
+            <td><h3>Итого</h3></td>
+            <td>
+            </td>
+            <td><strong>{{ cart.sum }} руб</strong></td>
+        <td></td>
+        </tr>
+        </tfoot>
+        </table>
+    </div>
+    <div class="col-md-7 p-5">
+        {% if not request.user.is_authenticated %}
+            <div>
+             <p>У вас есть возможность воспользоваться программой лояльности. Для этого необходимо авторизоваться или зарегистрироваться.
+                Если предложение не интересует, можете сразу перейти к оплате</p>
+             <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#auth">Вход</button>
+                или
+            <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#reg">Регистрация</button>
+                <div class="modal fade" id="auth" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header"></div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <h3 class="text-center">Авторизация</h3>
+                                        <hr>
+                                        <form action="{% url 'login_post' %}" method="POST">
+                                            {% csrf_token %}
+                                            {{ formlogin|crispy }}
+                                            <input type="submit" class="btn btn-success btn-block" value="Войти ">
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal fade" id="reg" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header"></div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <h3 class="text-center">Регистрация</h3>
+                                        <hr>
+                                        <form action="{% url 'registration_post' %}" method="POST">
+                                            {% csrf_token %}
+                                            {{ formregistr| crispy }}
+                                            <input type="submit" class="btn btn-success btn-block" value="Зарегистрироваться">
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                Закрыть</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    <br>
+    <a href="{% url 'checkout' %}" role="button" class="btn btn-primary btn-block mb-3">Перейти к оплате</a>
+    </div>
+</div>
+    </div>
+{% endblock content %}

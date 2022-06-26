@@ -1,0 +1,28 @@
+<div class="col-md-12 pt-3">
+    <div class="row">
+        <div class="col-md-2">
+            <img src="{{ film.image.url }}" class="img-fluid">
+        </div>
+        <div class="col-md-10">
+            <h3>{{ film.name }}</h3>
+            <hr>
+            <p><strong>Производство:</strong> {{ film.country }}</p>
+            <p><strong>Жанры:</strong>
+                {% for genre in film.genre.all %}
+                    <span>{{ genre.name }} </span>
+                {% endfor %}
+            </p>
+            <p><strong>Старт проката:</strong> {{ film.date_of_release }}</p>
+            <p><strong>Описание:</strong> {{ film.description }}</p>
+        </div>
+    </div>
+    <hr>
+    <h3>Выбрать сеанс</h3>
+    <hr>
+    <ul class="list-group list-group-horizontal">
+        {% for date in dates %}
+            <li class="list-group-item"><a class="btn btn-secondary" role="button" href="{% url 'seans_list' film_slug=film.slug date_seans=date %}">{{ date|date:"j E l" }}</a></li>
+        {% endfor %}
+    </ul>
+    <hr>
+</div>

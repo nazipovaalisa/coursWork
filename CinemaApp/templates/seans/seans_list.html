@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container">
+    {% include 'include/info.html' %}
+    {% with seans_all.0 as seans %}
+    <h5>{{ seans.date_seans}}</h5>
+    {% endwith %}
+    <div class="col-md-12 pt-0">
+    <div class="row">
+        {% for seans in seans_all %}
+            {% if not seans.is_past %}
+        <div class="col-md-2 p-2">
+            <a href="{{ seans.get_absolute_url }}"><button type="button" class="btn btn-success">{{ seans.time_seans }}<p>{{ seans.price| stringformat:"d" }} руб | {{ seans.hall.get_type_display }}</p></button></a>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+    </div>
+    </div>
+{% endblock content %}

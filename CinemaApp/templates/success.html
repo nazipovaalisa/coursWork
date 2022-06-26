@@ -1,0 +1,14 @@
+{% extends 'base.html'%}
+
+{% block content %}
+    <div class="container">
+    <div class="text-center">
+    <div class="col-md-12">
+    <h3 class="text-center mt-5">Оплата прошла успешно!</h3>
+    <h4 class="text-center">Сумма заказа {{ cart.sum }}</h4>
+    <br>
+    <a href="{% url 'base' %}"><button type="button" class="btn btn-outline-secondary">Вернуться на главную</button></a>
+    </div>
+    </div>
+    </div>
+{% endblock content %}

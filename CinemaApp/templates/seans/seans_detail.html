@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="container">
+<div class="col-md-12 ml-6 mt-6">
+<div class="row">
+    <div class="col-md-9">
+    <table class="table text-center" valign="middle">
+    <tr>
+        <td colspan="16">
+            <hr size="10">
+            <h4>Экран</h4>
+            <br><br>
+        </td>
+    </tr>
+    <tr>
+        {% for i in number %}
+            <tr>
+            <td>{{ i }}</td>
+            {% for ticket in tickets %}
+                {% if ticket.row == i %}
+                    <td>
+                        {% if ticket.reserved %}
+                            {% if ticket in cart.tickets_in_cart %}
+                                 {% if ticket.seat < 10 %}
+                                    <a href="{% url 'delete_from_cart' ticket_id=ticket.id %}" role="button" class="btn btn-warning btn-sm">&nbsp{{ ticket.seat }}</a>
+                                 {% else %}
+                                    <a href="{% url 'delete_from_cart' ticket_id=ticket.id %}" role="button" class="btn btn-warning btn-sm">{{ ticket.seat }}</a>
+                                 {% endif %}
+                            {% else %}
+                                {% if ticket.seat < 10 %}
+                                    <button type="button" class="btn btn-secondary btn-sm disabled" aria-disabled="true">&nbsp{{ ticket.seat }}</button>
+                                {% else %}
+                                     <button type="button" class="btn btn-secondary btn-sm disabled" aria-disabled="true">{{ ticket.seat }}</button>
+                                {% endif %}
+                            {% endif %}
+                        {% elif ticket.bought %}
+                                {% if ticket.seat < 10 %}
+                                    <button type="button" class="btn btn-secondary btn-sm disabled" aria-disabled="true">&nbsp{{ ticket.seat }}</button>
+                                {% else %}
+                                    <button type="button" class="btn btn-secondary btn-sm disabled" aria-disabled="true">{{ ticket.seat }}</button>
+                                {% endif %}
+                        {% else %}
+                                {% if ticket.seat < 10 %}
+                                   <a href="{% url 'add_to_cart' ticket_id=ticket.id  %}" role="button" class="btn btn-primary btn-sm">&nbsp{{ ticket.seat }}</a>
+                               {% else %}
+                                   <a href="{% url 'add_to_cart' ticket_id=ticket.id  %}" role="button" class="btn btn-primary btn-sm">{{ ticket.seat }}</a>
+                               {% endif %}
+                        {% endif %}
+                    </td>
+                {% endif %}
+            {% endfor %}
+            <td>{{ i }}</td>
+            </tr>
+        {% endfor %}
+    <tr>
+        <td colspan="16">
+            <br>
+            <a href="{% url 'cart' %}" role="button" class="btn btn-dark">Купить билеты</a>
+        </td>
+    </tr>
+    </table>
+    </div>
+        <div class="col-md-3 ml-3 pt-3">
+        <h3>{{ seans.film.name }}</h3>
+        <hr>
+        <p><strong>Дата сеанса:</strong> {{ seans.date_seans }}</p>
+        <p><strong>Время:</strong> {{ seans.time_seans }}</p>
+        <p><strong>Зал:</strong> {{ seans.hall.hall_id }} | {{ seans.hall.get_type_display }}</p>
+        </div>
+</div>
+</div>
+    </div>
+{% endblock content %}

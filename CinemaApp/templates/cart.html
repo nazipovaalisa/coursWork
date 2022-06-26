@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container">
+    <div class="text-center mt-3 mb-3">
+    {% if cart.tickets.count %}
+        <h3>Ваши билеты</h3>
+        {% else %}
+        <h3>Выбранных билетов нет</h3>
+        <br>
+        <a href="{% url 'base' %}"><button type="button" class="btn btn-outline-secondary">Вернуться на главную</button></a>
+    {% endif %}</div>
+    {% if cart.tickets.count %}
+        {% with cart.tickets.all.0 as bron %}
+        <table class="table text-center ">
+        <thead>
+        <tr valign="top">
+            <td width="20%">
+                <img src="{{ bron.ticket.seans.film.image.url }}" class="img-fluid">
+            </td>
+            <td colspan="3" align="left">
+                <h1>{{ bron.ticket.seans.film }}</h1>
+                <h4>{{ bron.ticket.seans.date_seans }} | {{ bron.ticket.seans.time_seans }}</h4>
+                <h4>Зал: {{ bron.ticket.seans.hall }}</h4>
+            </td>
+        </tr>
+        </thead>
+            <tbody>
+        {% for bron_ticket in cart.tickets.all %}
+        <tr>
+            <td>
+                <h5>Ряд:</h5> {{ bron_ticket.ticket.row }}
+            </td>
+            <td>
+                <h5>Место:</h5> {{ bron_ticket.ticket.seat }}
+            </td>
+            <td>
+                <h5>Цена:</h5> {{ bron_ticket.ticket.price }} р
+            </td>
+            <td>
+                <a href="{% url 'delete_from_cart' ticket_id=bron_ticket.ticket.id %}">
+                    <i class="bi bi-x-circle-fill" style="font-size: 2rem; color: #CC3434;"></i>
+                </a>
+            </td>
+        </tr>
+        {% endfor %}
+        {% endwith %}
+        </tbody>
+        <tfoot>
+        <tr>
+            <td><h3>Итого</h3></td>
+            <td>
+            </td>
+        <td>{{ cart.sum }} руб</td>
+        <td></td>
+        </tr>
+        </tfoot>
+        </table>
+        <div class="text-center mt-3 mb3">
+        <a href="{% url 'checkorder' %}"><button type="button" class="btn btn-primary">Продолжить</button></a>
+        </div>
+        <br>
+    {% endif %}
+    </div>
+{% endblock content %}
